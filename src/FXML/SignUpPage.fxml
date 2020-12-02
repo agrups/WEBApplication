@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpPage">
+    <children>
+        <SplitPane prefHeight="401.0" prefWidth="601.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="signUpBtn" layoutX="204.0" layoutY="330.0" mnemonicParsing="false" onAction="#signup" prefHeight="40.0" prefWidth="191.0" text="Signup" />
+                        <Label layoutX="187.0" layoutY="22.0" prefHeight="40.0" prefWidth="208.0" text="name" />
+                        <TextField fx:id="nameId" layoutX="191.0" layoutY="49.0" prefHeight="25.0" prefWidth="218.0" />
+                        <Label layoutX="191.0" layoutY="74.0" text="surname" />
+                  <TextField fx:id="surnameId" layoutX="191.0" layoutY="91.0" prefHeight="25.0" prefWidth="218.0" />
+                  <TextField fx:id="pphoneId" layoutX="191.0" layoutY="140.0" prefHeight="25.0" prefWidth="218.0" />
+                  <TextField fx:id="pemailId" layoutX="191.0" layoutY="188.0" prefHeight="25.0" prefWidth="218.0" />
+                  <TextField fx:id="plognameId" layoutX="191.0" layoutY="242.0" prefHeight="25.0" prefWidth="218.0" />
+                  <TextField fx:id="ppswId" layoutX="191.0" layoutY="284.0" prefHeight="25.0" prefWidth="218.0" />
+                  <Label layoutX="191.0" layoutY="116.0" text="phone number" />
+                  <Label layoutX="190.0" layoutY="175.0" text="email" />
+                  <Label layoutX="189.0" layoutY="217.0" text="login name" />
+                  <Label layoutX="194.0" layoutY="267.0" text="password" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

@@ -86,7 +86,6 @@ public class MainSystemWindow implements Initializable {
         int allIncome = 0;
         for (Category cat : CategoryController.getAllCategories(fms.getId())) {
             for (Income inc : IncomeExpensesController.getIncome(cat.getId())) {
-                System.out.println(inc.getPrice());
                 allIncome += inc.getPrice();
             }
         }

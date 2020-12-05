@@ -30,20 +30,22 @@ public class WebIncomeController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public String getCategoryIncome(@RequestParam("categoryId") int id) throws SQLException, ClassNotFoundException {
-
         List<Income> allIncome = incomeExpensesController.getIncome(id);
+        if(allIncome.size() == 0){
+            return null;
+        }else{
+            GsonBuilder gson = new GsonBuilder();
+            gson.registerTypeAdapter(Income.class, new IncomeGSONSerializer());
+            Gson parser = gson.create();
+            parser.toJson(allIncome.get(0));
 
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Income.class, new IncomeGSONSerializer());
-        Gson parser = gson.create();
-        parser.toJson(allIncome.get(0));
+            Type libraryList = new TypeToken<List<Income>>() {
+            }.getType();
+            gson.registerTypeAdapter(libraryList, new AllIncomeGSONSerializer());
+            parser = gson.create();
 
-        Type libraryList = new TypeToken<List<Income>>() {
-        }.getType();
-        gson.registerTypeAdapter(libraryList, new AllIncomeGSONSerializer());
-        parser = gson.create();
-
-        return parser.toJson(allIncome);
+            return parser.toJson(allIncome);
+        }
     }
 
     @RequestMapping(value = "/income/add", method = {RequestMethod.POST})

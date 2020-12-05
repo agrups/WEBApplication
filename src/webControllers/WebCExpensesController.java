@@ -32,18 +32,21 @@ public class WebCExpensesController {
     public String getCategoryExpenses(@RequestParam("categoryId") int id) throws SQLException, ClassNotFoundException {
 
         List<Expenses> allIncome = incomeExpensesController.getExpenses(id);
+        if(allIncome.size() == 0){
+            return null;
+        }else {
+            GsonBuilder gson = new GsonBuilder();
+            gson.registerTypeAdapter(Expenses.class, new ExpensesGSONSerializer());
+            Gson parser = gson.create();
+            parser.toJson(allIncome.get(0));
 
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Expenses.class, new ExpensesGSONSerializer());
-        Gson parser = gson.create();
-        parser.toJson(allIncome.get(0));
+            Type libraryList = new TypeToken<List<Expenses>>() {
+            }.getType();
+            gson.registerTypeAdapter(libraryList, new AllExpensesGSONSerializer());
+            parser = gson.create();
 
-        Type libraryList = new TypeToken<List<Expenses>>() {
-        }.getType();
-        gson.registerTypeAdapter(libraryList, new AllExpensesGSONSerializer());
-        parser = gson.create();
-
-        return parser.toJson(allIncome);
+            return parser.toJson(allIncome);
+        }
     }
 
     @RequestMapping(value = "/expenses/add", method = {RequestMethod.POST})

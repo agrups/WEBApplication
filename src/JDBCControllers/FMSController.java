@@ -15,8 +15,9 @@ public class FMSController {
                 ("SELECT * FROM fms_system WHERE systemId = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
-        if (!rs.next())
+        if (!rs.next()) {
             return null;
+        }
 
         String companyName = rs.getString(2);
         String version = rs.getString(3);

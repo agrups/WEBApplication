@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Expenses;
-import model.Income;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +32,9 @@ public class WebCExpensesController {
     public String getCategoryExpenses(@RequestParam("categoryId") int id) throws SQLException, ClassNotFoundException {
 
         List<Expenses> allIncome = incomeExpensesController.getExpenses(id);
-        if(allIncome.size() == 0){
+        if (allIncome.size() == 0) {
             return null;
-        }else {
+        } else {
             GsonBuilder gson = new GsonBuilder();
             gson.registerTypeAdapter(Expenses.class, new ExpensesGSONSerializer());
             Gson parser = gson.create();
@@ -61,11 +60,11 @@ public class WebCExpensesController {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getProperty("expensesDate"));
         int catId = Integer.parseInt(data.getProperty("categoryId"));
 
-        if(!name.equals("") && amount != 0){
+        if (!name.equals("") && amount != 0) {
             Expenses expenses = new Expenses(name, amount, date, categoryControl.findCategory(catId));
             incomeExpensesController.createExpenses(expenses);
             return "Added successfully";
-        }else{
+        } else {
             return "Wrong";
         }
     }

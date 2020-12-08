@@ -1,7 +1,6 @@
 package controllers;
 
 import JDBCControllers.CategoryController;
-import controllers.CategoryManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +14,11 @@ import javafx.stage.Stage;
 import model.Category;
 import model.FinanceManagementSystem;
 import model.User;
-import org.springframework.security.ldap.userdetails.Person;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UpdateCategoryManagement implements Initializable {
@@ -72,8 +67,6 @@ public class UpdateCategoryManagement implements Initializable {
             alert.showAndWait();
         } else {
             category.setName(newCategoryName.getText());
-/*            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String date = sdf.format(new Date());*/
             category.setDateModified(new Date());
             category.setDescription(categoryDescription.getText());
             CategoryController.update(category);

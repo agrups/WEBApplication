@@ -38,19 +38,9 @@ public class CategoryController {
         while (categories.next()) {
             allCategories.add(new Category(categories.getInt("id"),
                     categories.getString("name"),
-                    categories.getString("description")/*,
-                    categories.getDate("dateCreated"),
-                    categories.getDate("dateModified")*/
-                    /*categories.getInt("systemId"),
-                    categories.getInt("parentCategoryId")*/));
+                    categories.getString("description")));
         }
         return allCategories;
-
-        /* fmsJson.addProperty("categoryId", category.getId());
-        fmsJson.addProperty("categoryName", category.getName());
-        fmsJson.addProperty("categoryDescription", category.getDescription());
-        fmsJson.addProperty("categorySystemId", category.getFms().getId());
-        fmsJson.addProperty("categoryParentCategoryId", category.getParentCategory().getId());*/
     }
 
     public static Category findCategory(int categoryId) throws SQLException, ClassNotFoundException {
@@ -68,9 +58,7 @@ public class CategoryController {
                 category.getString("name"),
                 category.getString("description"),
                 category.getDate("dateCreated"),
-                category.getDate("dateModified")/*,
-                category.getInt("systemId"),
-                category.getInt("parentCategoryId")*/);
+                category.getDate("dateModified"));
         connection.close();
         return resultCategory;
     }
@@ -90,9 +78,7 @@ public class CategoryController {
                 category.getString("name"),
                 category.getString("description"),
                 category.getDate("dateCreated"),
-                category.getDate("dateModified")/*,
-                category.getInt("systemId"),
-                category.getInt("parentCategoryId")*/);
+                category.getDate("dateModified"));
         connection.close();
         return resultCategory;
     }
@@ -106,11 +92,11 @@ public class CategoryController {
         return user.next();
     }
 
-    public static  void update(Category category) throws ClassNotFoundException, SQLException {
+    public static void update(Category category) throws ClassNotFoundException, SQLException {
         Connection connection = JDBCConnection.connectToDb();
         PreparedStatement ps = connection.prepareStatement
                 ("update category set name =?, description =?, dateModified=? where id=?");
-        ps.setString (1, category.getName());
+        ps.setString(1, category.getName());
         ps.setString(2, category.getDescription());
         ps.setDate(3, new Date(category.getDateModified().getTime()));
         ps.setInt(4, category.getId());
@@ -128,7 +114,7 @@ public class CategoryController {
         connection.close();
     }
 
-    public static void createSubcategory(Category category) throws ClassNotFoundException, SQLException {
+    public static void createCategory(Category category) throws ClassNotFoundException, SQLException {
         Connection connection = JDBCConnection.connectToDb();
         PreparedStatement ps = connection.prepareStatement("INSERT INTO category(name, description, dateCreated, systemId) VALUES( ?,?,?, (SELECT systemId from fms_system where systemId=?))");
         ps.setString(1, category.getName());

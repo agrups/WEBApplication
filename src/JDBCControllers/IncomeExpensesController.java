@@ -12,21 +12,21 @@ import java.util.List;
 public class IncomeExpensesController {
 
     public static List<Income> getIncome(int categoryId) throws ClassNotFoundException, SQLException {
-            List<Income> income = new ArrayList<>();
-            Connection connection = JDBCConnection.connectToDb();
-            PreparedStatement ps = connection.prepareStatement
-                    ("SELECT * FROM income WHERE categoryId = ?");
-            ps.setInt(1, categoryId);
-            ResultSet incomeQ = ps.executeQuery();
+        List<Income> income = new ArrayList<>();
+        Connection connection = JDBCConnection.connectToDb();
+        PreparedStatement ps = connection.prepareStatement
+                ("SELECT * FROM income WHERE categoryId = ?");
+        ps.setInt(1, categoryId);
+        ResultSet incomeQ = ps.executeQuery();
 
-            while (incomeQ.next()) {
-                income.add(new Income(incomeQ.getInt("incomeId"),
-                        incomeQ.getString("name"),
-                        incomeQ.getInt("amount"),
-                        incomeQ.getDate("date"),
-                        CategoryController.findCategory(incomeQ.getInt("categoryId"))));
-            }
-            return income;
+        while (incomeQ.next()) {
+            income.add(new Income(incomeQ.getInt("incomeId"),
+                    incomeQ.getString("name"),
+                    incomeQ.getInt("amount"),
+                    incomeQ.getDate("date"),
+                    CategoryController.findCategory(incomeQ.getInt("categoryId"))));
+        }
+        return income;
     }
 
     public static void create(Income income) throws ClassNotFoundException, SQLException {

@@ -15,8 +15,6 @@ public class CategoryGSONSerializer implements JsonSerializer<Category> {
         fmsJson.addProperty("categoryId", category.getId());
         fmsJson.addProperty("categoryName", category.getName());
         fmsJson.addProperty("categoryDescription", category.getDescription());
-/*        fmsJson.addProperty("categorySystemId", category.getFms().getId());
-        fmsJson.addProperty("categoryParentCategoryId", category.getParentCategory().getId());*/
         return fmsJson;
     }
 }

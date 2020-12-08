@@ -40,8 +40,6 @@ public class MainSystemWindow implements Initializable {
 
     private User user;
 
-    private int id;
-
     public void setFms(FinanceManagementSystem fms, User user) {
         this.fms = fms;
         this.user = user;
@@ -103,7 +101,6 @@ public class MainSystemWindow implements Initializable {
         return allExpenses;
     }
 
-    //sitas
     public void manageCategoriesForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/CategoryManagement.fxml"));
         Parent root = loader.load();
@@ -117,9 +114,8 @@ public class MainSystemWindow implements Initializable {
         stage.show();
     }
 
-    //survarkyt
     public void updateYourInfoForm(ActionEvent actionEvent) throws IOException {
-        if(user != null){
+        if (user != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/UserInfoUpdate.fxml"));
             Parent root = loader.load();
 

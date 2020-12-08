@@ -55,9 +55,9 @@ public class WebUserController {
 
         List<User> allCategoryUsers = userControl.getUsers(id);
 
-        if(allCategoryUsers.size() == 0){
+        if (allCategoryUsers.size() == 0) {
             return null;
-        }else {
+        } else {
             GsonBuilder gson = new GsonBuilder();
             gson.registerTypeAdapter(User.class, new UserGSONSerializer());
             Gson parser = gson.create();
@@ -131,8 +131,6 @@ public class WebUserController {
         return Integer.toString(user.getId());
     }
 
-    //create(User user)
-    //loginName, password, name, surname, email, phoneNumber, individual, systemId
 
     @RequestMapping(value = "/user/add", method = {RequestMethod.POST})
     @ResponseStatus(value = HttpStatus.OK)

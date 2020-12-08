@@ -15,11 +15,10 @@ import javafx.stage.Stage;
 import model.Category;
 import model.FinanceManagementSystem;
 import model.User;
-import utils.JDBCConnection;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -73,7 +72,7 @@ public class AddCategoryManagement implements Initializable {
             parentCategory = category;
 
             newCategory.setDateCreated(new Date());
-            CategoryController.createSubcategory(newCategory);
+            CategoryController.createCategory(newCategory);
 
             CategoryController.updateParentCategory(CategoryController.findCategory(newCategoryName.getText(), fms.getId()), category.getId());
 

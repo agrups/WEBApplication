@@ -13,12 +13,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.FinanceManagementSystem;
 import model.User;
-import utils.JDBCConnection;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -47,8 +45,7 @@ public class LoginPage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             this.fms = chooseFMS();
-            //this.fms = FMSController.getFinanceSystem("Kompanija");
-            id= fms.getId();
+            id = fms.getId();
             System.out.println(fms.getName());
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

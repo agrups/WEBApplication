@@ -1,16 +1,13 @@
 package webControllers;
 
-import GSONSerializable.AllFMSGSONSerializer;
 import GSONSerializable.AllSystemCategoriesGSONSerializer;
 import GSONSerializable.CategoryGSONSerializer;
-import GSONSerializable.FMSGSONSerializer;
 import JDBCControllers.CategoryController;
 import JDBCControllers.FMSController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Category;
-import model.FinanceManagementSystem;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +30,9 @@ public class WebCategoryController {
     public String getAllSystemCategories(@RequestParam("systemId") int id) throws SQLException, ClassNotFoundException {
 
         List<Category> allCategories = categoryControl.getAllCategories(id);
-        if(allCategories.size() == 0){
+        if (allCategories.size() == 0) {
             return null;
-        }else {
+        } else {
             GsonBuilder gson = new GsonBuilder();
             gson.registerTypeAdapter(Category.class, new CategoryGSONSerializer());
             Gson parser = gson.create();
@@ -94,7 +91,7 @@ public class WebCategoryController {
         int sysId = Integer.parseInt(data.getProperty("categorySystemId"));
 
         Category cat = new Category(name, description, FMSController.findSystem(sysId));
-        CategoryController.createSubcategory(cat);
+        CategoryController.createCategory(cat);
         return "Added successfully";
     }
 

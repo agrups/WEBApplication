@@ -14,11 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.FinanceManagementSystem;
 import model.User;
-import utils.JDBCConnection;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class SignUpPage implements Initializable {

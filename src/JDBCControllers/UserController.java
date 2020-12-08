@@ -175,11 +175,11 @@ public class UserController {
         return rs.next();
     }
 
-    public static  void updateUserInfo(User user) throws ClassNotFoundException, SQLException {
+    public static void updateUserInfo(User user) throws ClassNotFoundException, SQLException {
         Connection connection = JDBCConnection.connectToDb();
         PreparedStatement ps = connection.prepareStatement
                 ("update user set name =?, surname =?, email =?, phoneNumber=?, loginName=?, password=? where userId=?");
-        ps.setString (1, user.getName());
+        ps.setString(1, user.getName());
         ps.setString(2, user.getSurname());
         ps.setString(3, user.getEmail());
         ps.setString(4, user.getPhoneNumber());

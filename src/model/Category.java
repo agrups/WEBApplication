@@ -13,7 +13,6 @@ public class Category implements Serializable {
     private Date dateCreated;
     private Date dateModified;
     private Category parentCategory;
-    private int parentCategoryId;
     private ArrayList<Category> subCategories = new ArrayList<Category>();
     private ArrayList<Expenses> expenses = new ArrayList<Expenses>();
     private ArrayList<User> responsibleUsers = new ArrayList<User>();
@@ -37,8 +36,6 @@ public class Category implements Serializable {
         this.description = description;
         this.dateCreated = dateCreated;
         this.dateModified = dateModified;
-/*        this.systemId = systemId;
-        this.parentCategoryId = parentCategoryId;*/
     }
 
     public Category(String name, String description, User user) {

@@ -12,13 +12,13 @@ public class JDBCConnection {
         String DB_URL = "jdbc:mysql://127.0.0.1:3307/systemdata";
         String USER = "root";
         String PASS = "";
-       conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
         return conn;
     }
 
-    public static void disconnectFromDb(Connection connection, Statement statement){
-        if(connection != null && statement != null){
+    public static void disconnectFromDb(Connection connection, Statement statement) {
+        if (connection != null && statement != null) {
             try {
                 statement.close();
                 connection.close();

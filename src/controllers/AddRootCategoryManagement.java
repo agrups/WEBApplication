@@ -65,7 +65,7 @@ public class AddRootCategoryManagement implements Initializable {
             Category newCategory = new Category(newCategoryName.getText(), categoryDescription.getText(), user, category, fms);
 
             newCategory.setDateCreated(new Date());
-            CategoryController.createSubcategory(newCategory);
+            CategoryController.createCategory(newCategory);
 
             CategoryController.addResponUser(CategoryController.findCategory(newCategoryName.getText(), fms.getId()).getId(), user.getId());
 

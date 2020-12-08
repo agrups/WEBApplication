@@ -26,7 +26,6 @@ public class UserInfoUpdate implements Initializable {
     public Button exitBtn;
     @FXML
     public Button infoBtn;
-    public ListView infoList;
     public TextField name;
     public TextField surname;
     public TextField email;
@@ -37,7 +36,7 @@ public class UserInfoUpdate implements Initializable {
     private FinanceManagementSystem fms;
     private User user;
 
-    public void setFms(FinanceManagementSystem fms, User user){
+    public void setFms(FinanceManagementSystem fms, User user) {
         this.fms = fms;
         this.user = user;
         fillPersonalData();
@@ -45,7 +44,7 @@ public class UserInfoUpdate implements Initializable {
 
     private void fillPersonalData() {
 
-        if(user != null){
+        if (user != null) {
             name.setText(user.getName());
             surname.setText(user.getSurname());
             email.setText(user.getEmail());
@@ -85,7 +84,7 @@ public class UserInfoUpdate implements Initializable {
         Parent root = loader.load();
 
         MainSystemWindow mainLibraryWindow = loader.getController();
-        mainLibraryWindow.setFms(fms,user);
+        mainLibraryWindow.setFms(fms, user);
 
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.setTitle("Finance Management System");

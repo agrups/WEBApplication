@@ -17,7 +17,6 @@ public class StartApp extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        //  DatabaseUtils.disconnectFromDb(connection, statement);
     }
 
 

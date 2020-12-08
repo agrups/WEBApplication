@@ -31,9 +31,9 @@ public class WebIncomeController {
     @ResponseBody
     public String getCategoryIncome(@RequestParam("categoryId") int id) throws SQLException, ClassNotFoundException {
         List<Income> allIncome = incomeExpensesController.getIncome(id);
-        if(allIncome.size() == 0){
+        if (allIncome.size() == 0) {
             return null;
-        }else{
+        } else {
             GsonBuilder gson = new GsonBuilder();
             gson.registerTypeAdapter(Income.class, new IncomeGSONSerializer());
             Gson parser = gson.create();
@@ -59,11 +59,11 @@ public class WebIncomeController {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getProperty("incomeDate"));
         int catId = Integer.parseInt(data.getProperty("categoryId"));
 
-        if(!name.equals("") && amount != 0){
+        if (!name.equals("") && amount != 0) {
             Income income = new Income(name, amount, date, categoryControl.findCategory(catId));
             incomeExpensesController.create(income);
             return "Added successfully";
-        }else{
+        } else {
             return "Wrong";
         }
     }

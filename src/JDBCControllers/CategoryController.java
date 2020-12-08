@@ -3,10 +3,7 @@ package JDBCControllers;
 import model.Category;
 import utils.JDBCConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +106,17 @@ public class CategoryController {
         return user.next();
     }
 
+    public static  void update(Category category) throws ClassNotFoundException, SQLException {
+        Connection connection = JDBCConnection.connectToDb();
+        PreparedStatement ps = connection.prepareStatement
+                ("update category set name =?, description =?, dateModified=? where id=?");
+        ps.setString (1, category.getName());
+        ps.setString(2, category.getDescription());
+        ps.setDate(3, new Date(category.getDateModified().getTime()));
+        ps.setInt(4, category.getId());
+        ps.executeUpdate();
+        connection.close();
+    }
 
     public static void updateParentCategory(Category category, int parentId) throws ClassNotFoundException, SQLException {
         Connection connection = JDBCConnection.connectToDb();
@@ -122,10 +130,12 @@ public class CategoryController {
 
     public static void createSubcategory(Category category) throws ClassNotFoundException, SQLException {
         Connection connection = JDBCConnection.connectToDb();
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO category(name, description, systemId) VALUES( ?,?,(SELECT systemId from fms_system where systemId=?))");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO category(name, description, dateCreated, systemId) VALUES( ?,?,?, (SELECT systemId from fms_system where systemId=?))");
         ps.setString(1, category.getName());
         ps.setString(2, category.getDescription());
-        ps.setInt(3, category.getFms().getId());
+        ps.setDate(3, new Date(category.getDateCreated().getTime()));
+        ps.setInt(4, category.getFms().getId());
+
         ps.executeUpdate();
         connection.close();
     }

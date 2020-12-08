@@ -175,10 +175,6 @@ public class Category implements Serializable {
         return "Category name: " + this.name + " ;\n" +
                 "Description: " + this.description + " ;\n" +
                 "Date created: " + this.dateCreated + " ;\n" +
-                "Date last modified: " + this.dateModified + " ;\n" +
-                "Subcategories: " + this.subCategories.stream().count() + " ;\n" +
-                //"Responsible users: " + this.responsibleUsers.size() + " ;\n" +
-                "Income: " + this.income + " ;\n" +  //darasyti kad suma rodytu
-                "Expenses: " + this.expenses;
+                "Date last modified: " + this.dateModified + " ;\n";
     }
 }

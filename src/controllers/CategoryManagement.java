@@ -1,6 +1,9 @@
 package controllers;
 
 import JDBCControllers.CategoryController;
+import JDBCControllers.FMSController;
+import JDBCControllers.IncomeExpensesController;
+import JDBCControllers.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import model.Category;
@@ -19,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CategoryManagement implements Initializable {
@@ -66,9 +71,9 @@ public class CategoryManagement implements Initializable {
     }
 
     public void addCategoryForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
-        category = getPressedCategoryName();
-
-        if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
+        Category category = getPressedCategoryName();
+        if(category == null){chooseCategoryFirst();}
+        else if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
             Alert alertFirst = new Alert(Alert.AlertType.ERROR);
             alertFirst.setTitle("Error");
             alertFirst.setHeaderText("Add Category Error");
@@ -88,13 +93,37 @@ public class CategoryManagement implements Initializable {
         }
     }
 
-    public void updateCategoryForm(ActionEvent actionEvent) throws IOException {
+    public void updateCategoryForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
+        Category category = getPressedCategoryName();
+        if(category == null){chooseCategoryFirst();}
+        else if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
+            Alert alertFirst = new Alert(Alert.AlertType.ERROR);
+            alertFirst.setTitle("Error");
+            alertFirst.setHeaderText("Update Info");
+            alertFirst.setContentText("You are not one of the responsible people of this category, so you can not update info");
+            alertFirst.showAndWait();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/UpdateCategoryManagement.fxml"));
+            Parent root = loader.load();
+
+            UpdateCategoryManagement updateCategoryManagement = loader.getController();
+            updateCategoryManagement.setFms(fms, category, user);
+
+            Stage stage = (Stage) addResponsiblePersonBtn.getScene().getWindow();
+            stage.setTitle("Finance Management System");
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
     }
 
     public Category getPressedCategoryName() throws SQLException, ClassNotFoundException {
-        String categoryData = categoryList.getSelectionModel().getSelectedItem().toString();
-        System.out.println(categoryData);
-        return CategoryController.findCategory(categoryData, fms.getId());
+        if(categoryList.getSelectionModel().getSelectedItems().isEmpty()){
+            return null;
+        }else{
+            String categoryData = categoryList.getSelectionModel().getSelectedItem().toString();
+            System.out.println(categoryData);
+            return CategoryController.findCategory(categoryData, fms.getId());
+        }
     }
 
 /*    public List<Category> getMainCategories(int systemId) throws ClassNotFoundException, SQLException {
@@ -117,23 +146,54 @@ public class CategoryManagement implements Initializable {
 
     public void printCategoryInfoForm(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         Category category = getPressedCategoryName();
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("System Categories");
-        alert.setHeaderText("Category Details");
-        alert.setContentText(category.toString());
-        alert.showAndWait();
+            if(category == null){chooseCategoryFirst();}
+            else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("System Categories");
+                alert.setHeaderText("Category Details");
+                alert.setContentText(category.toString());
+                alert.showAndWait();
+            }
     }
 
-    public void addResponsiblePersonForm(ActionEvent actionEvent) {
-
+    public void addResponsiblePersonForm(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, IOException {
+        Category category = getPressedCategoryName();
+        if(category == null){chooseCategoryFirst();}
+        else if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
+            Alert alertFirst = new Alert(Alert.AlertType.ERROR);
+            alertFirst.setTitle("Error");
+            alertFirst.setHeaderText("Add responsible person");
+            alertFirst.setContentText("You are not one of the responsible people of this category, so you can not add other responsible people");
+            alertFirst.showAndWait();
+        } else {
+            List<String> choices = UserController.getAllChoices();
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+            dialog.setTitle("Add responsible user");
+            dialog.setHeaderText("Choose user");
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                String userId = result.get();
+                int id = Integer.parseInt(userId);
+                User user1 = UserController.findUser(id);
+                category.getResponsibleUsers().add(user1);
+                CategoryController.addResponUser(category.getId(), id);
+            }
+        }
     }
 
     public void deleteCategoryForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         Category category = getPressedCategoryName();
-        if (CategoryController.subcategoriesExistInCategory(category.getId())) {
+        if(category == null){chooseCategoryFirst();}
+        else if (CategoryController.subcategoriesExistInCategory(category.getId())) {
             showAlertHasSubcategories();
-        } else {
+        }else{
+            int id = category.getId();
+            if(IncomeExpensesController.getExpenses(id).size() != 0){
+                IncomeExpensesController.removeExpense(id);
+            }
+            if(IncomeExpensesController.getIncome(id).size() != 0){
+                IncomeExpensesController.removeIncome(id);
+            }
             CategoryController.removeCategory(category);
             fillCategoriesWithData();
         }
@@ -173,9 +233,9 @@ public class CategoryManagement implements Initializable {
     }
 
     public void addIncomeForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
-        category = getPressedCategoryName();
-
-        if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
+        Category category = getPressedCategoryName();
+        if(category == null){chooseCategoryFirst();}
+        else if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
             Alert alertFirst = new Alert(Alert.AlertType.ERROR);
             alertFirst.setTitle("Error");
             alertFirst.setHeaderText("Add Income Error");
@@ -196,9 +256,9 @@ public class CategoryManagement implements Initializable {
     }
 
     public void addExpenseForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
-        category = getPressedCategoryName();
-
-        if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
+        Category category = getPressedCategoryName();
+        if(category == null){chooseCategoryFirst();}
+        else if (!CategoryController.isResponsibleUser(category.getId(), user.getId())) {
             Alert alertFirst = new Alert(Alert.AlertType.ERROR);
             alertFirst.setTitle("Error");
             alertFirst.setHeaderText("Add Expenses Error");
@@ -243,5 +303,12 @@ public class CategoryManagement implements Initializable {
         stage.setTitle("Finance Management System");
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    public void chooseCategoryFirst() {
+        Alert alertFirst = new Alert(Alert.AlertType.ERROR);
+        alertFirst.setTitle("Error");
+        alertFirst.setContentText("You have to choose category from the list first!!!");
+        alertFirst.showAndWait();
     }
 }

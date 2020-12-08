@@ -1,6 +1,7 @@
-package controllers;/*
-package fms.controllers;
+package controllers;
 
+import JDBCControllers.CategoryController;
+import controllers.CategoryManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +12,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import fms.model.Category;
-import fms.model.Company;
-import fms.model.FinanceManagementSystem;
-import fms.model.Person;
+import model.Category;
+import model.FinanceManagementSystem;
+import model.User;
+import org.springframework.security.ldap.userdetails.Person;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UpdateCategoryManagement implements Initializable {
@@ -33,26 +38,24 @@ public class UpdateCategoryManagement implements Initializable {
 
     private Category category;
     private FinanceManagementSystem fms;
-    private Person person;
-    private Company company;
+    private User user;
 
-    public void setFms(FinanceManagementSystem fms, Category category, Person person, Company company){
+    public void setFms(FinanceManagementSystem fms, Category category, User user) {
         this.fms = fms;
         this.category = category;
-        this.person = person;
-        this.company = company;
+        this.user = user;
     }
 
-    public void exit(ActionEvent actionEvent) throws IOException {
+    public void exit(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         loadMainWindow();
     }
 
-    private void loadMainWindow() throws IOException {
+    private void loadMainWindow() throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/CategoryManagement.fxml"));
         Parent root = loader.load();
 
         CategoryManagement categoryManagement = loader.getController();
-        categoryManagement.setFms(fms, person, company);
+        categoryManagement.setFms(fms, user);
 
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.setTitle("Finance Management System");
@@ -60,33 +63,26 @@ public class UpdateCategoryManagement implements Initializable {
         stage.show();
     }
 
-    public void update(ActionEvent actionEvent) throws IOException {
-       // if(!newCategoryName.getText().equals("")){
-            if(fms.checkIfCategoryExists(newCategoryName.getText())){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error with new category name update");
-                alert.setContentText("New category name already exist");
-                alert.showAndWait();
-            }else{
-*/
-/*                category.setName(newCategoryName.getText());
-                category.setDateModified(LocalDate.now());*//*
+    public void update(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
+        if (newCategoryName.getText().equals("") || CategoryController.categoryExist(newCategoryName.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error with new category name update");
+            alert.setContentText("New category name already exist or fields are empty");
+            alert.showAndWait();
+        } else {
+            category.setName(newCategoryName.getText());
+/*            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());*/
+            category.setDateModified(new Date());
+            category.setDescription(categoryDescription.getText());
+            CategoryController.update(category);
 
-                fms.getCategoryWithName(category.getName()).setName(newCategoryName.getText());
-                fms.getCategoryWithName(category.getName()).setDateModified(LocalDate.now());
-            }
-       // }
-       // if(!categoryDescription.getText().equals("")){
-*/
-/*            category.setDescription(categoryDescription.getText());
-            category.setDateModified(LocalDate.now());*//*
-
-        fms.getCategoryWithName(category.getName()).setDescription(categoryDescription.getText());
-        fms.getCategoryWithName(category.getName()).setDateModified(LocalDate.now());
-       // }
-
-        //loadMainWindow();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Category update");
+            alert.setContentText("Category was updated successfully");
+            alert.showAndWait();
+        }
     }
 
     @Override
@@ -94,4 +90,5 @@ public class UpdateCategoryManagement implements Initializable {
 
     }
 }
-*/
+
+

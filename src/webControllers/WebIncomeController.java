@@ -58,8 +58,14 @@ public class WebIncomeController {
         int amount = Integer.parseInt(data.getProperty("incomeAmount"));
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getProperty("incomeDate"));
         int catId = Integer.parseInt(data.getProperty("categoryId"));
-        incomeExpensesController.create(new Income(name, amount, date, categoryControl.findCategory(catId)));
-        return "Added successfully";
+
+        if(!name.equals("") && amount != 0){
+            Income income = new Income(name, amount, date, categoryControl.findCategory(catId));
+            incomeExpensesController.create(income);
+            return "Added successfully";
+        }else{
+            return "Wrong";
+        }
     }
 
 }

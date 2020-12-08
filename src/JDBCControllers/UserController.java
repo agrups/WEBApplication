@@ -35,6 +35,17 @@ public class UserController {
         return users;
     }
 
+    public static List<String> getAllChoices() throws SQLException, ClassNotFoundException {
+        Connection connection = JDBCConnection.connectToDb();
+        Statement statement = connection.createStatement();
+        ResultSet allSystems = statement.executeQuery("SELECT userId FROM user");
+        List<String> choices = new ArrayList<>();
+        while (allSystems.next()) {
+            choices.add(allSystems.getString(1));
+        }
+        return choices;
+    }
+
     public static User findUser(String name) throws SQLException, ClassNotFoundException {
         Connection connection = JDBCConnection.connectToDb();
         PreparedStatement ps = connection.prepareStatement
@@ -162,5 +173,20 @@ public class UserController {
         ps.setString(1, login);
         ResultSet rs = ps.executeQuery();
         return rs.next();
+    }
+
+    public static  void updateUserInfo(User user) throws ClassNotFoundException, SQLException {
+        Connection connection = JDBCConnection.connectToDb();
+        PreparedStatement ps = connection.prepareStatement
+                ("update user set name =?, surname =?, email =?, phoneNumber=?, loginName=?, password=? where userId=?");
+        ps.setString (1, user.getName());
+        ps.setString(2, user.getSurname());
+        ps.setString(3, user.getEmail());
+        ps.setString(4, user.getPhoneNumber());
+        ps.setString(5, user.getLoginName());
+        ps.setString(6, user.getPassword());
+        ps.setInt(7, user.getId());
+        ps.executeUpdate();
+        connection.close();
     }
 }

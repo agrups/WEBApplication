@@ -2,6 +2,7 @@ package JDBCControllers;
 
 import model.Expenses;
 import model.Income;
+import model.User;
 import utils.JDBCConnection;
 
 import java.sql.*;
@@ -64,5 +65,21 @@ public class IncomeExpensesController {
                     CategoryController.findCategory(expenseQuery.getInt("categoryId"))));
         }
         return expenses;
+    }
+
+    public static void removeIncome(int categoryId) throws ClassNotFoundException, SQLException {
+        Connection connection = JDBCConnection.connectToDb();
+        PreparedStatement ps = connection.prepareStatement("delete from income where categoryId=?");
+        ps.setInt(1, categoryId);
+        ps.execute();
+        connection.close();
+    }
+
+    public static void removeExpense(int categoryId) throws ClassNotFoundException, SQLException {
+        Connection connection = JDBCConnection.connectToDb();
+        PreparedStatement ps = connection.prepareStatement("delete from expenses where categoryId=?");
+        ps.setInt(1, categoryId);
+        ps.execute();
+        connection.close();
     }
 }

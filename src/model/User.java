@@ -124,12 +124,14 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User" + this.id + " ; " +
+/*        return "User" + this.id + " ; " +
                 "User name: " + this.name + " ; " +
                 "User surname: " + this.surname + "; " +
                 "Phone number: " + this.phoneNumber + " ; " +
                 "individual: " + this.individual + " ; " +
-                "Email: " + this.email + " .\n";
+                "Email: " + this.email + " .\n";*/
+        return "ID: " + id + " " +  name + " " + surname;
     }
+
 }
 

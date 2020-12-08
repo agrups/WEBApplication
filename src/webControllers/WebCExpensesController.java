@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Expenses;
+import model.Income;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -59,8 +60,14 @@ public class WebCExpensesController {
         int amount = Integer.parseInt(data.getProperty("expensesAmount"));
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getProperty("expensesDate"));
         int catId = Integer.parseInt(data.getProperty("categoryId"));
-        incomeExpensesController.createExpenses(new Expenses(name, amount, date, categoryControl.findCategory(catId)));
-        return "Added successfully";
+
+        if(!name.equals("") && amount != 0){
+            Expenses expenses = new Expenses(name, amount, date, categoryControl.findCategory(catId));
+            incomeExpensesController.createExpenses(expenses);
+            return "Added successfully";
+        }else{
+            return "Wrong";
+        }
     }
 
 }

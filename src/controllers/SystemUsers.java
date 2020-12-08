@@ -41,7 +41,7 @@ public class SystemUsers implements Initializable {
         usersList.getItems().clear();
 
         List<User> allUsers = UserController.getAllSysUsers(fms.getId());
-        allUsers.forEach(user -> usersList.getItems().add(user.getName()));
+        allUsers.forEach(user -> usersList.getItems().add(user.toString()));
     }
 
     public void deleteUser(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {

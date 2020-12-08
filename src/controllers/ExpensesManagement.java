@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -61,7 +62,11 @@ public class ExpensesManagement implements Initializable {
     public void add(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
 
         IncomeExpensesController.createExpenses(new Expenses(receiverField.getText(), Integer.parseInt(amountField.getText()), new Date(), category));
-        loadMainWindow();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Expenses");
+        alert.setContentText("Expense was added successfully");
+        alert.showAndWait();
 
     }
 

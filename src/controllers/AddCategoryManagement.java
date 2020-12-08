@@ -20,6 +20,7 @@ import utils.JDBCConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddCategoryManagement implements Initializable {
@@ -71,6 +72,7 @@ public class AddCategoryManagement implements Initializable {
 
             parentCategory = category;
 
+            newCategory.setDateCreated(new Date());
             CategoryController.createSubcategory(newCategory);
 
             CategoryController.updateParentCategory(CategoryController.findCategory(newCategoryName.getText(), fms.getId()), category.getId());
@@ -82,6 +84,12 @@ public class AddCategoryManagement implements Initializable {
             category.getSubcategories().add(newCategory);
 
             categoryList.getItems().add(newCategoryName.getText());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("System Categories");
+            alert.setContentText("Subcategory was added successfully");
+            alert.showAndWait();
+
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

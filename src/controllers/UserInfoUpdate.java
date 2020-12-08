@@ -1,22 +1,23 @@
-package controllers;/*
-package fms.controllers;
+package controllers;
 
+import JDBCControllers.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import fms.model.Category;
-import fms.model.Company;
-import fms.model.FinanceManagementSystem;
-import fms.model.Person;
+import model.FinanceManagementSystem;
+import model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class UserInfoUpdate implements Initializable {
@@ -26,47 +27,31 @@ public class UserInfoUpdate implements Initializable {
     @FXML
     public Button infoBtn;
     public ListView infoList;
+    public TextField name;
+    public TextField surname;
+    public TextField email;
+    public TextField phoneNumber;
+    public TextField loginName;
+    public TextField psw;
 
     private FinanceManagementSystem fms;
-    private Company company;
-    private Person person;
+    private User user;
 
-    public void setFms(FinanceManagementSystem fms, Person person, Company company){
+    public void setFms(FinanceManagementSystem fms, User user){
         this.fms = fms;
-        this.person = person;
-        this.company = company;
+        this.user = user;
         fillPersonalData();
     }
-    */
-/*String companyName,
-                   String phoneNumber,
-                   String email,
-                   String contactPersonName,
-                   String contactPersonSurname,
-                   String loginName,
-                   String psw,
-                   int companyId*//*
-
 
     private void fillPersonalData() {
-        infoList.getItems().clear();
 
-        if(person != null){
-            infoList.getItems().add(person.getName());
-            infoList.getItems().add(person.getSurname());
-            infoList.getItems().add(person.getEmail());
-            infoList.getItems().add(person.getPhoneNumber());
-            infoList.getItems().add(person.getLoginName());
-            infoList.getItems().add(person.getPsw());
-            //cat.getIncome().forEach(inc -> incomeList.getItems().add(cat.getName() + " : " + inc.getPrice() + " " + inc.getDescription() + " " + inc.getIssuer()));
-        }else{
-            infoList.getItems().add(company.getCompanyName());
-            infoList.getItems().add(company.getEmail());
-            infoList.getItems().add(company.getPhoneNumber());
-            infoList.getItems().add(company.getContactPersonName());
-            infoList.getItems().add(company.getContactPersonSurname());
-            infoList.getItems().add(company.getLoginName());
-            infoList.getItems().add(company.getPsw());
+        if(user != null){
+            name.setText(user.getName());
+            surname.setText(user.getSurname());
+            email.setText(user.getEmail());
+            phoneNumber.setText(user.getPhoneNumber());
+            loginName.setText(user.getLoginName());
+            psw.setText(user.getPassword());
         }
     }
 
@@ -75,8 +60,20 @@ public class UserInfoUpdate implements Initializable {
 
     }
 
-    public void updateInfo(ActionEvent actionEvent) {
+    public void updateInfo(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        user.setName(name.getText());
+        user.setSurname(surname.getText());
+        user.setEmail(email.getText());
+        user.setPhoneNumber(phoneNumber.getText());
+        user.setLoginName(loginName.getText());
+        user.setPassword(psw.getText());
 
+        UserController.updateUserInfo(user);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("User update");
+        alert.setContentText("User was updated successfully");
+        alert.showAndWait();
     }
 
     public void exit(ActionEvent actionEvent) throws IOException {
@@ -88,7 +85,7 @@ public class UserInfoUpdate implements Initializable {
         Parent root = loader.load();
 
         MainSystemWindow mainLibraryWindow = loader.getController();
-        mainLibraryWindow.setFms(fms, person, company);
+        mainLibraryWindow.setFms(fms,user);
 
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.setTitle("Finance Management System");
@@ -96,10 +93,6 @@ public class UserInfoUpdate implements Initializable {
         stage.show();
     }
 
-    public Category getPressedCategoryName(){
-        String categoryData = infoList.getSelectionModel().getSelectedItem().toString();
-
-        return fms.getCategories().stream().filter(b -> b.getName().equals(categoryData)).findFirst().orElse(null);
-    }
 }
-*/
+
+

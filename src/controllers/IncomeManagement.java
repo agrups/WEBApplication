@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -62,7 +63,11 @@ public class IncomeManagement implements Initializable {
         Income income = (new Income(issuerField.getText(), Integer.parseInt(amountField.getText()), new Date(), category));
         IncomeExpensesController.create(income);
         category.getIncome().add(income);
-        loadMainWindow();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Income");
+        alert.setContentText("Income was added successfully");
+        alert.showAndWait();
     }
 
     @Override

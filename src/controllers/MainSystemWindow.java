@@ -118,20 +118,20 @@ public class MainSystemWindow implements Initializable {
     }
 
     //survarkyt
-/*    public void updateYourInfoForm(ActionEvent actionEvent) throws IOException {
-        if(person != null || company != null){
+    public void updateYourInfoForm(ActionEvent actionEvent) throws IOException {
+        if(user != null){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/UserInfoUpdate.fxml"));
             Parent root = loader.load();
 
             UserInfoUpdate userInfoUpdate = loader.getController();
-            userInfoUpdate.setFms(fms, person, company);
+            userInfoUpdate.setFms(fms, user);
 
             Stage stage = (Stage) updateYourInfoBtn.getScene().getWindow();
             stage.setTitle("Finance Management System");
             stage.setScene(new Scene(root));
             stage.show();
         }
-    }*/
+    }
 
     public void manageIncomeExpensesForm(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/IncomeExpensesLists.fxml"));
@@ -154,6 +154,4 @@ public class MainSystemWindow implements Initializable {
         Platform.exit();
     }
 
-    public void updateYourInfoForm(ActionEvent actionEvent) {
-    }
 }

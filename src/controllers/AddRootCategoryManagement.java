@@ -18,6 +18,7 @@ import model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddRootCategoryManagement implements Initializable {
@@ -63,6 +64,7 @@ public class AddRootCategoryManagement implements Initializable {
 
             Category newCategory = new Category(newCategoryName.getText(), categoryDescription.getText(), user, category, fms);
 
+            newCategory.setDateCreated(new Date());
             CategoryController.createSubcategory(newCategory);
 
             CategoryController.addResponUser(CategoryController.findCategory(newCategoryName.getText(), fms.getId()).getId(), user.getId());
@@ -70,6 +72,12 @@ public class AddRootCategoryManagement implements Initializable {
             newCategory.getResponsibleUsers().add(user);
 
             categoryList.getItems().add(newCategoryName.getText());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("System Categories");
+            alert.setContentText("Root category was added successfully");
+            alert.showAndWait();
+
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

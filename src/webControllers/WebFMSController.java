@@ -34,18 +34,21 @@ public class WebFMSController {
     public String getAllFMS() throws SQLException, ClassNotFoundException {
 
         List<FinanceManagementSystem> allFMS = systemControl.getAllFMS();
+        if(allFMS.size() == 0){
+            return null;
+        }else {
+            GsonBuilder gson = new GsonBuilder();
+            gson.registerTypeAdapter(FinanceManagementSystem.class, new FMSGSONSerializer());
+            Gson parser = gson.create();
+            parser.toJson(allFMS.get(0));
 
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(FinanceManagementSystem.class, new FMSGSONSerializer());
-        Gson parser = gson.create();
-        parser.toJson(allFMS.get(0));
+            Type libraryList = new TypeToken<List<FinanceManagementSystem>>() {
+            }.getType();
+            gson.registerTypeAdapter(libraryList, new AllFMSGSONSerializer());
+            parser = gson.create();
 
-        Type libraryList = new TypeToken<List<FinanceManagementSystem>>() {
-        }.getType();
-        gson.registerTypeAdapter(libraryList, new AllFMSGSONSerializer());
-        parser = gson.create();
-
-        return parser.toJson(allFMS);
+            return parser.toJson(allFMS);
+        }
     }
 
     @RequestMapping(value = "fms/fmsInfo", method = RequestMethod.GET)

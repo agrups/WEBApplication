@@ -32,23 +32,22 @@ public class WebCategoryController {
     @ResponseBody
     public String getAllSystemCategories(@RequestParam("systemId") int id) throws SQLException, ClassNotFoundException {
 
-/*        List<Category> allCategories = categoryControl.getAllCategories(id);
-
-        return this.gson.toJson(allCategories);*/
-
         List<Category> allCategories = categoryControl.getAllCategories(id);
+        if(allCategories.size() == 0){
+            return null;
+        }else {
+            GsonBuilder gson = new GsonBuilder();
+            gson.registerTypeAdapter(Category.class, new CategoryGSONSerializer());
+            Gson parser = gson.create();
+            parser.toJson(allCategories.get(0));
 
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Category.class, new CategoryGSONSerializer());
-        Gson parser = gson.create();
-        parser.toJson(allCategories.get(0));
+            Type categoryList = new TypeToken<List<Category>>() {
+            }.getType();
+            gson.registerTypeAdapter(categoryList, new AllSystemCategoriesGSONSerializer());
+            parser = gson.create();
 
-        Type categoryList = new TypeToken<List<Category>>() {
-        }.getType();
-        gson.registerTypeAdapter(categoryList, new AllSystemCategoriesGSONSerializer());
-        parser = gson.create();
-
-        return parser.toJson(allCategories);
+            return parser.toJson(allCategories);
+        }
     }
 
     @RequestMapping(value = "category/categoryInfoById", method = RequestMethod.GET)

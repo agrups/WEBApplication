@@ -54,17 +54,22 @@ public class WebUserController {
         if (id == 0) return "No system id provided";
 
         List<User> allCategoryUsers = userControl.getUsers(id);
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(User.class, new UserGSONSerializer());
-        Gson parser = gson.create();
-        parser.toJson(allCategoryUsers.get(0));
 
-        Type userList = new TypeToken<List<User>>() {
-        }.getType();
-        gson.registerTypeAdapter(userList, new AllSystemUsersGSONSerializer());
-        parser = gson.create();
+        if(allCategoryUsers.size() == 0){
+            return null;
+        }else {
+            GsonBuilder gson = new GsonBuilder();
+            gson.registerTypeAdapter(User.class, new UserGSONSerializer());
+            Gson parser = gson.create();
+            parser.toJson(allCategoryUsers.get(0));
 
-        return parser.toJson(allCategoryUsers);
+            Type userList = new TypeToken<List<User>>() {
+            }.getType();
+            gson.registerTypeAdapter(userList, new AllSystemUsersGSONSerializer());
+            parser = gson.create();
+
+            return parser.toJson(allCategoryUsers);
+        }
     }
 
     @RequestMapping(value = "user/userInfoByName", method = RequestMethod.GET)
